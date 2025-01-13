@@ -1,6 +1,11 @@
 package com.hrhn.presentation.ui.screen.storage.add
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import com.hrhn.domain.model.StorageItem
 import com.hrhn.domain.repository.StorageRepository
 import com.hrhn.presentation.util.Event
@@ -21,8 +26,8 @@ class AddStorageViewModel @AssistedInject constructor(
     private val _message = MutableLiveData<Event<String>>()
     val message: LiveData<Event<String>> get() = _message
 
-    val input = MutableLiveData<String>(storageItem?.content ?: "")
-    val nextEnabled: LiveData<Boolean> = Transformations.map(input) {
+    val input = MutableLiveData(storageItem?.content ?: "")
+    val nextEnabled: LiveData<Boolean> = input.map {
         it.length in (2..50)
     }
 

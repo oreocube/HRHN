@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.hrhn"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.hrhn"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 3
         versionName = "1.0.1"
         setProperty("archivesBaseName", "HRHN-v${versionName}(${versionCode})")
@@ -40,11 +40,11 @@ android {
         viewBinding = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
