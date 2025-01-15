@@ -27,7 +27,11 @@ class TodayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTodayBinding.inflate(inflater)
+        _binding = FragmentTodayBinding.inflate(inflater).apply {
+            titleSection.setContent {
+                TodayScreen(viewModel)
+            }
+        }
         return binding.root
     }
 

@@ -24,28 +24,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tv_title"
+                <androidx.compose.ui.platform.ComposeView
+                    android:id="@+id/titleSection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_default"
-                    android:text="@string/title_today"
-                    android:textAppearance="@style/HeaderText.Accent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_text"
-                    android:dateWithYear="@{vm.today}"
-                    android:textAppearance="@style/CaptionText"
-                    android:textColor="@color/secondary_label"
-                    app:layout_constraintEnd_toEndOf="@id/tv_title"
-                    app:layout_constraintStart_toStartOf="@id/tv_title"
-                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
                 <View
                     android:id="@+id/view_background"
@@ -60,7 +45,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_date" />
+                    app:layout_constraintTop_toBottomOf="@id/titleSection" />
 
                 <androidx.constraintlayout.widget.Group
                     android:layout_width="wrap_content"
