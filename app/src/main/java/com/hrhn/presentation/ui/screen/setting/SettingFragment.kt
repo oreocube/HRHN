@@ -58,7 +58,7 @@ class SettingFragment : PreferenceFragmentCompat(),
         preferenceScreen.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         if (key == keyNotificationOnOff || key == keyHour || key == keyMinute) {
             if (sharedPreferenceManager.isNotificationOn) {
                 updateAlarm()
