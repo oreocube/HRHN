@@ -52,5 +52,5 @@ val HeaderLabel = Black
 //val dim = Gray54
 //val background = White
 //val setting_icon_fill = GrayC5
-//val cell_fill = GrayFB
-//val cell_label = Gray4A
+val CellFill = GrayFB
+val CellLabel = Gray4A
