@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.hrhn.databinding.FragmentTodayBinding
 import com.hrhn.presentation.ui.screen.addchallenge.AddChallengeActivity
 import com.hrhn.presentation.ui.screen.edit.EditChallengeActivity
 import com.hrhn.presentation.util.observeEvent
 import com.hrhn.presentation.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class TodayFragment : Fragment() {
@@ -37,21 +34,7 @@ class TodayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViews()
         observeData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchData()
-    }
-
-    private fun initViews() {
-        with(binding) {
-            vm = viewModel
-            lifecycleOwner = viewLifecycleOwner
-            srlToday.setOnRefreshListener { viewModel.fetchData() }
-        }
     }
 
     private fun observeData() {
@@ -65,14 +48,11 @@ class TodayFragment : Fragment() {
             editEvent.observeEvent(viewLifecycleOwner) {
                 startActivity(EditChallengeActivity.newIntent(requireContext(), it))
             }
-            isRefreshing.onEach {
-                binding.srlToday.isRefreshing = it
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
         }
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }

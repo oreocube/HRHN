@@ -38,7 +38,7 @@ fun TodayScreen(viewModel: TodayViewModel) {
     val todayString by remember(today) {
         derivedStateOf { today.formatDateWithYearString() }
     }
-    val todayChallenge by viewModel.todayChallengeFlow.collectAsStateWithLifecycle()
+    val todayChallenge by viewModel.todayChallenge.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize(),
