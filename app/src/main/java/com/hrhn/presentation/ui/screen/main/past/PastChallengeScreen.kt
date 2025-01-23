@@ -65,32 +65,20 @@ fun PastChallengeList(
     challenges: LazyPagingItems<Challenge>,
     onItemClick: (Challenge) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        item {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.menu_title_past_challenge),
-                style = Typography.titleLarge,
-            )
-        }
-
-        if (challenges.loadState.append.endOfPaginationReached && challenges.itemCount == 0) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
             item {
-                Box(
-                    modifier = Modifier.fillParentMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.message_empty_challenges),
-                        color = SecondaryLabel,
-                    )
-                }
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.menu_title_past_challenge),
+                    style = Typography.titleLarge,
+                )
             }
-        } else {
+
             items(
                 count = challenges.itemCount,
                 key = challenges.itemKey { item -> item.id }
@@ -101,6 +89,18 @@ fun PastChallengeList(
                         onClick = onItemClick,
                     )
                 }
+            }
+        }
+
+        if (challenges.loadState.append.endOfPaginationReached && challenges.itemCount == 0) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.message_empty_challenges),
+                    color = SecondaryLabel,
+                )
             }
         }
     }
