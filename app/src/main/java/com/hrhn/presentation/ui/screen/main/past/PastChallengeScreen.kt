@@ -1,6 +1,7 @@
 package com.hrhn.presentation.ui.screen.main.past
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.hrhn.R
 import com.hrhn.domain.model.Challenge
@@ -46,8 +48,22 @@ import com.hrhn.presentation.util.formatDateString
 import java.time.LocalDateTime
 
 @Composable
+fun PastChallengeScreen(
+    viewModel: PastChallengeViewModel,
+    onItemClick: (Challenge) -> Unit,
+) {
+    val challenges = viewModel.challengesFlow.collectAsLazyPagingItems()
+
+    PastChallengeList(
+        challenges = challenges,
+        onItemClick = onItemClick,
+    )
+}
+
+@Composable
 fun PastChallengeList(
     challenges: LazyPagingItems<Challenge>,
+    onItemClick: (Challenge) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -80,7 +96,10 @@ fun PastChallengeList(
                 key = challenges.itemKey { item -> item.id }
             ) { index ->
                 challenges[index]?.run {
-                    ChallengeItem(challenge = this)
+                    ChallengeItem(
+                        challenge = this,
+                        onClick = onItemClick,
+                    )
                 }
             }
         }
@@ -94,6 +113,7 @@ private val ReenieBeanie = FontFamily(
 @Composable
 private fun ChallengeItem(
     challenge: Challenge,
+    onClick: (Challenge) -> Unit,
 ) {
     val date = remember(challenge.date) {
         challenge.date.formatDateString()
@@ -104,6 +124,7 @@ private fun ChallengeItem(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(16.dp))
             .background(color = CellFill)
+            .clickable { onClick(challenge) }
             .padding(16.dp)
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -160,7 +181,8 @@ private fun PastChallengeItemPreview() {
             date = LocalDateTime.now(),
             content = "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하",
             emoji = Emoji.RED
-        )
+        ),
+        onClick = {},
     )
 }
 
@@ -187,9 +209,10 @@ private fun PastChallengeListPreview() {
             emoji = Emoji.BLUE
         ),
     )
-    
+
     val pagingItems = fakePagingItems(fakeData)
     PastChallengeList(
         challenges = pagingItems,
+        onItemClick = {},
     )
 }
