@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,6 +30,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.hrhn.R
 import com.hrhn.domain.model.Challenge
 import com.hrhn.domain.model.Emoji
@@ -40,12 +41,13 @@ import com.hrhn.presentation.ui.theme.None
 import com.hrhn.presentation.ui.theme.SecondaryLabel
 import com.hrhn.presentation.ui.theme.Typography
 import com.hrhn.presentation.ui.theme.White
+import com.hrhn.presentation.util.fakePagingItems
 import com.hrhn.presentation.util.formatDateString
 import java.time.LocalDateTime
 
 @Composable
 fun PastChallengeList(
-    challenges: List<Challenge>,
+    challenges: LazyPagingItems<Challenge>,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -60,14 +62,7 @@ fun PastChallengeList(
             )
         }
 
-        if (challenges.isNotEmpty()) {
-            items(
-                items = challenges,
-                key = { item -> item.id }
-            ) { challenge ->
-                ChallengeItem(challenge = challenge)
-            }
-        } else {
+        if (challenges.loadState.append.endOfPaginationReached && challenges.itemCount == 0) {
             item {
                 Box(
                     modifier = Modifier.fillParentMaxSize(),
@@ -77,6 +72,15 @@ fun PastChallengeList(
                         text = stringResource(id = R.string.message_empty_challenges),
                         color = SecondaryLabel,
                     )
+                }
+            }
+        } else {
+            items(
+                count = challenges.itemCount,
+                key = challenges.itemKey { item -> item.id }
+            ) { index ->
+                challenges[index]?.run {
+                    ChallengeItem(challenge = this)
                 }
             }
         }
@@ -163,13 +167,29 @@ private fun PastChallengeItemPreview() {
 @Composable
 @Preview(showBackground = true)
 private fun PastChallengeListPreview() {
+    val fakeData = listOf(
+        Challenge(
+            id = 1,
+            date = LocalDateTime.now(),
+            content = "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하",
+            emoji = Emoji.RED
+        ),
+        Challenge(
+            id = 2,
+            date = LocalDateTime.now(),
+            content = "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하",
+            emoji = Emoji.GREEN
+        ),
+        Challenge(
+            id = 3,
+            date = LocalDateTime.now(),
+            content = "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하",
+            emoji = Emoji.BLUE
+        ),
+    )
+    
+    val pagingItems = fakePagingItems(fakeData)
     PastChallengeList(
-        challenges = listOf(
-            Challenge(
-                date = LocalDateTime.now(),
-                content = "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하",
-                emoji = Emoji.RED
-            )
-        )
+        challenges = pagingItems,
     )
 }
